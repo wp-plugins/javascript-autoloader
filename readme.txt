@@ -17,8 +17,8 @@ To load additional JavaScript files just put them into a directory named jsautol
 
 This directory can be placed in three different locations that are loaded in the following order:
 
-* Child Theme dependent (if using a Child Theme) : in the Child Theme’s directory
-* Theme dependent : in the Theme’s directory
+* Child Theme dependent (if using a Child Theme) : in the Child Theme's directory
+* Theme dependent : in the Theme's directory
 * Theme independent : in the wp-content directory
 
 You can use as many subdirectories as you like. Only files with extension .js are added, all other files are ignored. 
