@@ -28,7 +28,6 @@ To ignore a complete directory (including all subdirectories) name the directory
 To load one ore more JavaScript files at the end of your HTML file just place them into a directory named footer. To add the files to the footer of your theme it is required to call wp_footer() in your footer.php.
 
 [Plugin Homepage](http://smartware.cc/wp-js-autoloader)
-
 [Demo](http://wp-js-autoloader.demo.smartware.cc)
 
 == Installation ==
