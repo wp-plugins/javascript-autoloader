@@ -32,7 +32,7 @@ To load one ore more JavaScript files at the end of your HTML file just place th
 
 == Installation ==
 
-1. Upload the "sw.cc-js-autoloader" folder to your "/wp-content/plugins/" directory.
+1. Upload the "js-autoloader" folder to your "/wp-content/plugins/" directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Create "jsautoload" folder(s) and put you JavaScript files in there ( see Plugins / JS AutoLoader in WP Admin )
 
