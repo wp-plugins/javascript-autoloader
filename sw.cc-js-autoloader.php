@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: JavaScript AutoLoader
-Plugin URI: http://smartware.cc/wp-js-autoloader
+Plugin URI: http://smartware.cc/free-wordpress-plugins/javascript-autoloader/
 Description: This Plugin allows you to load additional JavaScript files without the need to change files in the Theme directory. To load additional JavaScript files just put them into a directory named jsautoload.
-Version: 1.0
+Version: 1.1
 Author: smartware.cc
 Author URI: http://smartware.cc
 License: GPL2
@@ -25,133 +25,199 @@ License: GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-// returns an array of files to add
-function swcc_js_autoloader_getFiles( $dir, $suffix='', $urlprefix='', $prefix='', $depth=0, $footer=0, $source ) {
-  $dir = rtrim( $dir, '\\/' );
-  $files = array();
-  $result = array();
-  if( $urlprefix != '' && substr( $urlprefix, -1 ) != '/' ) {
-    $urlprefix .= '/';
+class Swcc_Javascript_Autoloader {
+
+  public function __construct() {
+    add_action( 'init', array( $this, 'load' ) );
+    add_action( 'wp_enqueue_scripts', array( $this, 'jsautoloader' ), 999 );
+    add_action( 'admin_init', array( $this, 'admininit' ) );
+    add_action( 'admin_menu', array( $this, 'adminmenu' ) );
   }
-  $suffix = strtolower( $suffix );
-  if ( file_exists( $dir ) ) {
-    foreach ( scandir( $dir ) as $f ) {
-      if ( $f !== '.' && $f !== '..' ) {
-        if ( is_dir( "$dir/$f" ) && substr( $f, 0, 1 ) != '_' ) {
-          if( $f == 'footer' || $footer == 1 ) {
-            $ft = 1;
+  
+  function load () {
+    load_plugin_textdomain( 'jsautoload_general', false, basename( dirname( __FILE__ ) ) . '/languages' );
+    load_plugin_textdomain( 'jsautoload', false, basename( dirname( __FILE__ ) ) . '/languages' );
+  }
+  
+  function admininit() {
+    add_meta_box( 'swcc_jsal_meta_box_like', __( 'Like this Plugin?', 'jsautoload_general' ), array( $this, 'swcc_jsal_add_meta_box_like' ), 'swcc_jsal', 'side' );
+    add_meta_box( 'swcc_jsal_meta_box_help', __( 'Need help?', 'jsautoload_general' ), array( $this, 'swcc_jsal_add_meta_box_help' ), 'swcc_jsal', 'side' );
+  }
+  
+  // add like meta box 
+  function swcc_jsal_add_meta_box_like() {
+    ?>
+    <ul>
+      <li><div class="dashicons dashicons-wordpress"></div>&nbsp;&nbsp;<a href="https://wordpress.org/plugins/javascript-autoloader/"><?php _e( 'Please rate the plugin', 'jsautoload_general' ); ?></a></li>
+      <li><div class="dashicons dashicons-admin-home"></div>&nbsp;&nbsp;<a href="http://smartware.cc/wp-js-autoloader"><?php _e( 'Plugin homepage', 'jsautoload_general'); ?></a></li>
+      <li><div class="dashicons dashicons-admin-home"></div>&nbsp;&nbsp;<a href="http://smartware.cc/"><?php _e( 'Author homepage', 'jsautoload_general' );?></a></li>
+      <li><div class="dashicons dashicons-googleplus"></div>&nbsp;&nbsp;<a href="https://plus.google.com/+SmartwareCc"><?php _e( 'Authors Google+ Page', 'jsautoload_general' ); ?></a></li>
+      <li><div class="dashicons dashicons-facebook-alt"></div>&nbsp;&nbsp;<a href="https://www.facebook.com/smartware.cc"><?php _e( 'Authors facebook Page', 'jsautoload_general' ); ?></a></li>
+    </ul>
+    <?php
+  }
+
+  // add help meta box 
+  function swcc_jsal_add_meta_box_help() {
+    ?>
+    <ul>
+      <li><div class="dashicons dashicons-wordpress"></div>&nbsp;&nbsp;<a href="https://wordpress.org/plugins/javascript-autoloader/faq/"><?php _e( 'Take a look at the FAQ section', 'jsautoload_general' ); ?></a></li>
+      <li><div class="dashicons dashicons-wordpress"></div>&nbsp;&nbsp;<a href="https://wordpress.org/plugins/javascript-autoloader"><?php _e( 'Take a look at the Support section', 'jsautoload_general'); ?></a></li>
+      <li><div class="dashicons dashicons-admin-comments"></div>&nbsp;&nbsp;<a href="http://smartware.cc/contact/"><?php _e( 'Feel free to contact the Author', 'jsautoload_general' ); ?></a></li>
+    </ul>
+    <?php
+  }
+  
+  // returns an array of files to add
+  function getFiles( $dir, $suffix='', $urlprefix='', $prefix='', $depth=0, $footer=0, $source ) {
+    $dir = rtrim( $dir, '\\/' );
+    $files = array();
+    $result = array();
+    if( $urlprefix != '' && substr( $urlprefix, -1 ) != '/' ) {
+      $urlprefix .= '/';
+    }
+    $suffix = strtolower( $suffix );
+    if ( file_exists( $dir ) ) {
+      foreach ( scandir( $dir ) as $f ) {
+        if ( $f !== '.' && $f !== '..' ) {
+          if ( is_dir( "$dir/$f" ) && substr( $f, 0, 1 ) != '_' ) {
+            if( $f == 'footer' || $footer == 1 ) {
+              $ft = 1;
+            } else {
+              $ft = 0;
+            }
+            $result = array_merge( $result, $this->getFiles( "$dir/$f", "$suffix", "$urlprefix", "$prefix$f/", $depth+1, $ft, $source ) );
           } else {
-            $ft = 0;
-          }
-          $result = array_merge( $result, swcc_js_autoloader_getFiles( "$dir/$f", "$suffix", "$urlprefix", "$prefix$f/", $depth+1, $ft, $source ) );
-        } else {
-          if ( $suffix=='' || ( $suffix != '' && strtolower( substr( $f, -strlen( $suffix ) ) ) == $suffix ) ) {
-            $file['name'] = $urlprefix.$prefix.$f;
-            $file['depth'] = $depth;
-            $file['footer'] = $footer;
-            $file['source'] = $source;
-            $result[] = $file;
+            if ( $suffix=='' || ( $suffix != '' && strtolower( substr( $f, -strlen( $suffix ) ) ) == $suffix ) ) {
+              $file['name'] = $urlprefix.$prefix.$f;
+              $file['depth'] = $depth;
+              $file['footer'] = $footer;
+              $file['source'] = $source;
+              $result[] = $file;
+            }
           }
         }
       }
     }
+    return $result;
   }
-  return $result;
-}
 
-// get an sorted array of all *.js files in all possible loactions 
-function swcc_autoloader_getAllFiles() {
-  $dir = 'jsautoload';
-  $filesarray = array();
-  if ( is_child_theme() ) { $filesarray = swcc_js_autoloader_getFiles( get_stylesheet_directory() . '/' . $dir, '.js', get_stylesheet_directory_uri() . '/' . $dir, '', 0, 0, 1 ); }
-  $filesarray = array_merge( $filesarray, swcc_js_autoloader_getFiles( get_template_directory() . '/' . $dir, '.js', get_template_directory_uri(). '/' . $dir, '', 0, 0, 2 ) );
-  $filesarray = array_merge( $filesarray, swcc_js_autoloader_getFiles( WP_CONTENT_DIR . '/' . $dir, '.js', content_url() . '/' . $dir, '', 0, 0, 3 ) );
-  $files = array();
-  $depth = array();
-  $source = array();
-  $footer = array();
-  foreach ( $filesarray as $file ) {
-    $files[] = $file['name'];
-    $depth[] = $file['depth'];
-    $source[] = $file['source'];
-    $footer[] = $file['footer'];
-  }
-  array_multisort( $footer, SORT_NUMERIC, $source, SORT_NUMERIC, $depth, SORT_NUMERIC, $files, SORT_ASC, $filesarray );
-  return $filesarray;
-}
-
-// adds an js file to header
-function swcc_js_autoloader_add( $jsfile, $footer ) {
-  wp_enqueue_script( 'swcc-js-autoloader-' . basename($jsfile), $jsfile, array(), false, ( $footer==1 ) );
-}
-
-// show admin page
-function swcc_js_autoloader_admin() {
-	if ( !current_user_can( 'activate_plugins' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-  $dir = 'jsautoload';
-	echo '<div class="wrap">';
-  echo '<div id="icon-tools" class="icon32"></div>';
-  echo '<h2>JavaScript AutoLoader</h2>';
-  echo '<h3>Possible paths to store your JavaScript files</h3>';
-  echo '<p><strong>Child Theme Directory</strong></p>';
-  if ( is_child_theme() ) {
-    echo '<p>current path: ' . get_stylesheet_directory() . '/' . $dir;
-  } else {
-    echo '<p>you are not using a Child Theme</p>';
-  }
-	echo '<p><strong>Theme Directory</strong></p>';
-  echo '<p>current path: ' . get_template_directory() . '/' . $dir;
-  echo '<p><strong>General Directory</strong></p>';
-  echo '<p>current path: ' . WP_CONTENT_DIR . '/' . $dir;
-  echo '<h3>Currently loaded (in that order) JavaScript files</h3>';
-  swcc_js_autoloader_adminshowcurrent();
-  echo '<h3>More Information</h3>';
-  echo '<p>Visit the <a href="http://smartware.cc/wp-js-autoloader/">WordPress JavaScript AutoLoader Plugin Homepage</a>';
-	echo '</div>';
-}
-
-// list cuurently loaded js files on admin page
-function swcc_js_autoloader_adminshowcurrent() {
-  $filesarray = swcc_autoloader_getAllFiles();  
-  if ( empty( $filesarray ) ) {
-    echo '<p>no files loaded currently</p>';
-  } else {
-  $loc = -1;
+  // get an sorted array of all *.js files in all possible loactions 
+  function getAllFiles() {
+    $dir = 'jsautoload';
+    $filesarray = array();
+    if ( is_child_theme() ) { $filesarray = $this->getFiles( get_stylesheet_directory() . '/' . $dir, '.js', get_stylesheet_directory_uri() . '/' . $dir, '', 0, 0, 1 ); }
+    $filesarray = array_merge( $filesarray, $this->getFiles( get_template_directory() . '/' . $dir, '.js', get_template_directory_uri(). '/' . $dir, '', 0, 0, 2 ) );
+    $filesarray = array_merge( $filesarray, $this->getFiles( WP_CONTENT_DIR . '/' . $dir, '.js', content_url() . '/' . $dir, '', 0, 0, 3 ) );
+    $files = array();
+    $depth = array();
+    $source = array();
+    $footer = array();
     foreach ( $filesarray as $file ) {
-      if ( $file['footer'] != $loc) {
-        if ( $file['footer'] == 0) {
-          echo '<p><strong>in Header</strong></p>';
-          echo '<ul>';
-        } else {
-          if ( $loc != -1 ) {
-            echo '</ul>';
-          }
-          echo '<ul>';
-          echo '<p><strong>in Footer (be sure to call wp_footer() in your footer template!)</strong></p>';
-        }
-        $loc = $file['footer'];
-      }
-      echo '<li>' . $file['name'] . '</li>';
+      $files[] = $file['name'];
+      $depth[] = $file['depth'];
+      $source[] = $file['source'];
+      $footer[] = $file['footer'];
     }
-    echo '</ul>';
+    array_multisort( $footer, SORT_NUMERIC, $source, SORT_NUMERIC, $depth, SORT_NUMERIC, $files, SORT_ASC, $filesarray );
+    return $filesarray;
+  }
+
+  // adds an js file to header
+  function add( $jsfile, $footer ) {
+    wp_enqueue_script( 'swcc-js-autoloader-' . basename($jsfile), $jsfile, array(), false, ( $footer==1 ) );
+  }
+
+  // show admin page
+  function showadmin() {
+    if ( !current_user_can( 'activate_plugins' ) )  {
+      wp_die( ___( 'You do not have sufficient permissions to access this page.' ) );
+    }
+    $dir = 'jsautoload'; 
+    ?>
+    <div class="wrap">
+      <?php screen_icon( 'tools' ); ?>
+      <h2>JavaScript AutoLoader</h2>
+      <div id="poststuff">
+        <div id="post-body" class="metabox-holder columns-2">
+          <div id="post-body-content">
+            <div class="meta-box-sortables ui-sortable">
+              <div class="postbox">
+                <h3><span><?php _e( 'Possible paths to store your JavaScript files', 'jsautoload'); ?></span></h3>
+                <div class="inside">
+                  <h4><?php _e( 'Child Theme Directory', 'jsautoload'); ?></h4>
+                  <p><?php 
+                    if ( is_child_theme() ) {
+                      echo __( 'Current Path', 'jsautoload' ) . ': <code>' . get_stylesheet_directory() . '/' . $dir . '</code>';
+                    } else {
+                      _e( 'You are not using a Child Theme', 'jsautoload' );
+                    }
+                  ?></p>
+                  <h4><?php _e( 'Theme Directory', 'jsautoload'); ?></h4>
+                  <p><?php echo __( 'Current Path', 'jsautoload' ) . ': <code>' . get_template_directory() . '/' . $dir; ?></code></p>
+                  <h4><?php _e( 'General Directory', 'jsautoload'); ?></h4>
+                  <p><?php echo __( 'Current Path', 'jsautoload' ) . ': <code>' . WP_CONTENT_DIR . '/' . $dir; ?></code></p>
+                </div>
+                <hr />
+                <h3><span><?php _e( 'Currently loaded JavaScript files (in that order)', 'jsautoload'); ?></span></h3>
+                <div class="inside">
+                  <?php $this->showcurrent(); ?>
+                </div>
+              </div> 
+            </div>
+          </div>
+          <div id="postbox-container-1" class="postbox-container">
+            <?php do_meta_boxes( 'swcc_jsal', 'side', true ); ?>
+          </div>
+        </div>
+        <br class="clear" />
+      </div>    
+      <br id="two_column" class="clear" />
+    </div>
+    <div class="clear"></div>
+    <?
+  }
+
+  // list cuurently loaded js files on admin page
+  function showcurrent() {
+    $filesarray = $this->getAllFiles();  
+    if ( empty( $filesarray ) ) {
+      echo '<p>no files loaded currently</p>';
+    } else {
+    $loc = -1;
+      foreach ( $filesarray as $file ) {
+        if ( $file['footer'] != $loc) {
+          if ( $file['footer'] == 0) {
+            echo '<p><strong>' . __('in Header', 'jsautoload' ) . '</strong></p>';
+            echo '<ul>';
+          } else {
+            if ( $loc != -1 ) {
+              echo '</ul>';
+            }
+            echo '<ul>';
+            echo '<p><strong>' . __( 'in Footer (be sure to call wp_footer() in your footer template!)', 'jsautoload' ) . '</strong></p>';
+          }
+          $loc = $file['footer'];
+        }
+        echo '<li><code>' . $file['name'] . '</code></li>';
+      }
+      echo '</ul>';
+    }
+  }
+
+  // init frontend
+  function jsautoloader() {
+    $filesarray = $this->getAllFiles();  
+    foreach ( $filesarray as $file ) {
+      $this->add( $file['name'], $file['footer'] );
+    }
+  }
+
+  // init backend
+  function adminmenu() {
+    add_management_page( 'WP JS AutoLoader', 'JS AutoLoader', 'activate_plugins', 'wpjsautoloader', array( $this, 'showadmin' ) );
   }
 }
 
-// init frontend
-function swcc_js_autoloader() {
-  $filesarray = swcc_autoloader_getAllFiles();  
-  foreach ( $filesarray as $file ) {
-    swcc_js_autoloader_add( $file['name'], $file['footer'] );
-  }
-}
-
-// init backend
-function swcc_js_autoloader_adminmenu() {
-  add_submenu_page( 'plugins.php', 'WP JS AutoLoader', 'JS AutoLoader', 'activate_plugins', 'wpjsautoloader', 'swcc_js_autoloader_admin' );
-}
-
-add_action( 'wp_enqueue_scripts', 'swcc_js_autoloader', 999 );
-add_action( 'admin_menu', 'swcc_js_autoloader_adminmenu' );
+$swccJavascriptAutoloader = new Swcc_Javascript_Autoloader();
 ?>

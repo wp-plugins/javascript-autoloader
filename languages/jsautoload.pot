@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: javascript autoloader\n"
+"POT-Creation-Date: 2014-11-88 15:34:40+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+msgid "Possible paths to store your JavaScript files"
+msgstr ""
+
+msgid "Child Theme Directory"
+msgstr ""
+
+msgid "Current Path"
+msgstr ""
+
+msgid "You are not using a Child Theme"
+msgstr ""
+
+msgid "Theme Directory"
+msgstr ""
+
+msgid "General Directory"
+msgstr ""
+
+msgid "Currently loaded JavaScript files (in that order)"
+msgstr ""
+
+msgid "in Header"
+msgstr ""
+
+msgid "in Footer (be sure to call wp_footer() in your footer template!)"
+msgstr ""
