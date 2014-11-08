@@ -42,7 +42,7 @@ Visit the [Plugin Homepage](http://smartware.cc/free-wordpress-plugins/javascrip
 
 = Do you like the JavaScript AutoLoader Plugin? =
 
-Thanks, I appreciate that. You don’t need to make a donation. No money, no beer, no coffee. Please, just [tell the world that you like what I’m doing](http://smartware.cc/make-a-donation/)! And that’s all.
+Thanks, I appreciate that. You don't need to make a donation. No money, no beer, no coffee. Please, just [tell the world that you like what I'm doing](http://smartware.cc/make-a-donation/)! And that's all.
 
 == Installation ==
 
