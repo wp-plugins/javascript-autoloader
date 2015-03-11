@@ -1,0 +1,43 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: smsartware.cc general language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: smartware.cc <sw@smartware.cc>\n"
+"Language-Team: smartware.cc <sw@smartware.cc>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es_ES\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "Like this Plugin?"
+msgstr "¿Le gusto el Plugin?"
+
+msgid "Please rate the plugin"
+msgstr "Por favor califique este Plugin"
+
+msgid "Plugin homepage"
+msgstr "Página web del Plugin"
+
+msgid "Author homepage"
+msgstr "Página web del Autor"
+
+msgid "Authors Google+ Page"
+msgstr "Sitio en Google+ del Autor"
+
+msgid "Authors facebook Page"
+msgstr "Facebook del Autor"
+
+msgid "Need help?"
+msgstr "¿Necesita ayuda?"
+
+msgid "Take a look at the FAQ section"
+msgstr "¿Dudas? Eche un vistazo a la sección de Preguntas Frecuentes"
+
+msgid "Take a look at the Support section"
+msgstr "Vea nuestra sección de Soporte"
+
+msgid "Feel free to contact the Author"
+msgstr "No dude en ponerse en contacto con el Autor"

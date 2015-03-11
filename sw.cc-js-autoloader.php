@@ -3,13 +3,13 @@
 Plugin Name: JavaScript AutoLoader
 Plugin URI: http://smartware.cc/free-wordpress-plugins/javascript-autoloader/
 Description: This Plugin allows you to load additional JavaScript files without the need to change files in the Theme directory. To load additional JavaScript files just put them into a directory named jsautoload.
-Version: 1.1
+Version: 1.2
 Author: smartware.cc
 Author URI: http://smartware.cc
 License: GPL2
 */
 
-/*  Copyright 2013  smartware.cc  (email : sw@smartware.cc)
+/*  Copyright 2015  smartware.cc  (email : sw@smartware.cc)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -49,7 +49,7 @@ class Swcc_Javascript_Autoloader {
     ?>
     <ul>
       <li><div class="dashicons dashicons-wordpress"></div>&nbsp;&nbsp;<a href="https://wordpress.org/plugins/javascript-autoloader/"><?php _e( 'Please rate the plugin', 'jsautoload_general' ); ?></a></li>
-      <li><div class="dashicons dashicons-admin-home"></div>&nbsp;&nbsp;<a href="http://smartware.cc/wp-js-autoloader"><?php _e( 'Plugin homepage', 'jsautoload_general'); ?></a></li>
+      <li><div class="dashicons dashicons-admin-home"></div>&nbsp;&nbsp;<a href="http://smartware.cc/free-wordpress-plugins/javascript-autoloader/"><?php _e( 'Plugin homepage', 'jsautoload_general'); ?></a></li>
       <li><div class="dashicons dashicons-admin-home"></div>&nbsp;&nbsp;<a href="http://smartware.cc/"><?php _e( 'Author homepage', 'jsautoload_general' );?></a></li>
       <li><div class="dashicons dashicons-googleplus"></div>&nbsp;&nbsp;<a href="https://plus.google.com/+SmartwareCc"><?php _e( 'Authors Google+ Page', 'jsautoload_general' ); ?></a></li>
       <li><div class="dashicons dashicons-facebook-alt"></div>&nbsp;&nbsp;<a href="https://www.facebook.com/smartware.cc"><?php _e( 'Authors facebook Page', 'jsautoload_general' ); ?></a></li>
