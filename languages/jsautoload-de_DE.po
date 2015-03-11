@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: javascript autoloader\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: smartware.cc <sw@smartware.cc>\n"
+"Language-Team: smartware.cc <sw@smartware.cc>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 1.6.7\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "Possible paths to store your JavaScript files"
+msgstr "Mögliche Pfade zum Speichern von JavaScript Dateien"
+
+msgid "Child Theme Directory"
+msgstr "Child Theme Verzeichnis"
+
+msgid "Current Path"
+msgstr "Aktueller Pfad"
+
+msgid "You are not using a Child Theme"
+msgstr "Du benutzt derzeit kein Child Theme"
+
+msgid "Theme Directory"
+msgstr "Theme Verzeichnis"
+
+msgid "General Directory"
+msgstr "Generelles Verzeichnis"
+
+msgid "Currently loaded JavaScript files (in that order)"
+msgstr "Aktuell geladene JavaScript Dateien (in dieser Reihenfolge)"
+
+msgid "in Header"
+msgstr "im Header"
+
+msgid "in Footer (be sure to call wp_footer() in your footer template!)"
+msgstr "im Footer (wp_footer() muss im Template aufgerufen werden!)"
